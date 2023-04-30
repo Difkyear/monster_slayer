@@ -1,18 +1,70 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue Basics</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/vue@next" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Monster Slayer</h1>
+    </header>
+    <div id="game">
+      <section id="monster" class="container">
+        <h2>Monster Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="monsterHealthValue"></div>
+        </div>
+      </section>
+      <section id="player" class="container">
+        <h2>Your Health</h2>
+        <div class="healthbar">
+          <div class="healthbar__value" :style="playerHealthValue"></div>
+        </div>
+      </section>
+      <section class="container" v-if="winner">
+        <h2>Game Over!</h2>
+        <h3 v-if="winner==='draw'">draw</h3>
+        <h3 v-if="winner==='Player'">you win</h3>
+        <h3 v-if="winner==='Monster'">monster winn</h3>
+        <button @click="restart">reStart</button>
+      </section>
+      <section id="controls" v-else>
+        <button @click="attackMonster">ATTACK</button>
+        <button :disabled="mayUseSpecialAttack" @click="specialAttack">
+          SPECIAL ATTACK
+        </button>
+        <button @click="healMyself">HEAL</button>
+        <button @click="surrender">SURRENDER</button>
+      </section>
+      <section id="log" class="container">
+        <h2>Battle Log</h2>
+        <ul>
+          <li v-for="bl in battleLog">
+            <span
+              :class="{'log--player':bl.creatre==='player','log--monster':bl.creatre==='monster'}"
+              >{{bl.creatre==='player'?'player':'monster'}}</span
+            >
+            <span v-if="bl.action==='heal'">
+              we heal ourself
+              <span class="log--heal">{{ bl.action}}</span>
+            </span>
+            <span v-if="bl.action==='attack'">
+              we attack monster
+              <span class="log--damage">{{ bl.action}}</span>
+            </span>
 
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-  <title>my-first-website</title>
-  <LINK href="styles.css" rel="stylesheet" type="text/css">
-</head>
-
-<body>
-
-<img src="https://octodex.github.com/images/daftpunktocat-thomas.gif" id="octocat" alt="octocat-gif" />
-
-<!-- Change this code here by copy and pasting your template on line 15 -->
-<p>Welcome to your first GitHub Pages website!</p>
-
-</body>
+            <span>{{bl.health}}</span>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </body>
 </html>
